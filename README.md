@@ -5,7 +5,7 @@
 ### 1. Open the project folder
 
 ```powershell
-cd "D:\college notes\6th sem\ML\ml project"
+cd "your project path"
 ```
 
 ### 2. Activate the virtual environment
