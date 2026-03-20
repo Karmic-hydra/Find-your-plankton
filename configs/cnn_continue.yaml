@@ -1,0 +1,25 @@
+training:
+  seed: 42
+  batch_size: 16
+  epochs_stage1: 2
+  epochs_stage2: 1
+  lr_stage1: 0.0001
+  lr_stage2: 0.00001
+  early_stopping_patience: 2
+  reduce_lr_factor: 0.5
+  reduce_lr_patience: 1
+
+model:
+  image_size: 160
+  dense_units: 384
+  dropout_head_1: 0.35
+  dropout_head_2: 0.25
+
+fine_tune:
+  enabled: false
+  unfreeze_last_n_layers: 20
+
+data:
+  max_train_samples: 8000
+  max_val_samples: 2000
+  max_test_samples: 2000

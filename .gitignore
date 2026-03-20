@@ -1,0 +1,25 @@
+# Python environments
+.venv/
+.venv312/
+
+# Python caches
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Notebook/checkpoint artifacts
+.ipynb_checkpoints/
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Large local assets
+data/
+artifacts/models/
+*.joblib
+*.keras

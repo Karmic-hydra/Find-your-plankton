@@ -1,0 +1,44 @@
+project:
+  name: plankton-classification-cnn-vs-traditional-ml
+  date: 2026-03-19
+  stage: phase-1-phase-2
+
+dataset:
+  root: data/2014
+  declared_reference:
+    name: WHOI Plankton 2014
+    expected_classes: 103
+    expected_images: 3500000
+  local_snapshot:
+    note: Filled after running audit script.
+
+comparison_protocol:
+  fairness_rules:
+    - Use identical train/val/test manifests for all approaches.
+    - Use one fixed class_to_index mapping for all runs.
+    - Keep inclusion/exclusion policy constant across approaches.
+    - Report both aggregate and per-class metrics.
+  primary_metrics:
+    - top1_accuracy
+    - macro_f1
+    - balanced_accuracy
+  secondary_metrics:
+    - top5_accuracy
+    - weighted_f1
+    - per_class_recall
+    - training_time
+    - inference_latency
+    - model_size_mb
+
+reproducibility:
+  random_seed: 42
+  split_seed: 42
+  notes:
+    - Save manifests under artifacts/manifests.
+    - Save audit outputs under reports/data_audit.
+
+phase_gate:
+  before_training:
+    - Audit report reviewed and approved.
+    - Class policy reviewed and approved.
+    - Split policy reviewed and approved.

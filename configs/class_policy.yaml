@@ -1,0 +1,23 @@
+policy:
+  version: 1
+  mode: include_all
+  description: >
+    Default policy includes every class folder found under data/2014.
+    If changed to include_only or exclude_list, keep this policy fixed
+    for both traditional ML and CNN experiments.
+
+include_only: []
+
+exclude_list: []
+
+ambiguous_candidates:
+  - bad
+  - mix
+  - mix_elongated
+  - detritus
+  - other_interaction
+  - pollen
+
+minimum_count_policy:
+  min_images_for_class: 5
+  action_if_below_minimum: exclude_and_log

@@ -1,0 +1,39 @@
+split:
+  version: 1
+  seed: 42
+  strategy: stratified
+  ratios:
+    train: 0.70
+    val: 0.15
+    test: 0.15
+
+minimum_class_requirements:
+  min_images_total: 5
+  min_images_for_test: 1
+  min_images_for_val: 1
+
+actions:
+  if_class_below_min_images_total: exclude_class_and_log
+  if_class_exactly_minimum: allow_with_warning
+
+imbalance_controls:
+  preserve_full_distribution_in_split: true
+  report_long_tail_buckets: true
+  long_tail_buckets:
+    - name: lt_10
+      max_images: 9
+    - name: lt_50
+      max_images: 49
+    - name: lt_100
+      max_images: 99
+    - name: lt_500
+      max_images: 499
+
+outputs:
+  manifest_dir: artifacts/manifests
+  files:
+    - train.csv
+    - val.csv
+    - test.csv
+    - class_to_index.json
+    - excluded_classes.csv

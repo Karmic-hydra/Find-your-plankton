@@ -1,0 +1,18 @@
+{
+  "dataset_root": "data/2014",
+  "seed": 42,
+  "ratios": {
+    "train": 0.7,
+    "val": 0.15,
+    "test": 0.15
+  },
+  "min_images_total": 5,
+  "eligible_classes": 79,
+  "excluded_classes": 15,
+  "samples": {
+    "train": 230848,
+    "val": 49473,
+    "test": 49473,
+    "total": 329794
+  }
+}

@@ -1,0 +1,26 @@
+training:
+  seed: 42
+  batch_size: 32
+  epochs_stage1: 10
+  epochs_stage2: 8
+  lr_stage1: 0.0001
+  lr_stage2: 0.00001
+  early_stopping_patience: 5
+  reduce_lr_factor: 0.5
+  reduce_lr_patience: 3
+
+model:
+  image_size: 224
+  dense_units: 512
+  dropout_head_1: 0.4
+  dropout_head_2: 0.3
+
+fine_tune:
+  enabled: true
+  unfreeze_last_n_layers: 20
+
+data:
+  # Set to null to use full manifest. Keep capped first for quick baseline runs.
+  max_train_samples: 60000
+  max_val_samples: 12000
+  max_test_samples: 12000

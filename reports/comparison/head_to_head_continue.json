@@ -1,0 +1,27 @@
+{
+  "traditional_best": {
+    "model": "svm",
+    "test_metrics": {
+      "top1_accuracy": 0.6556829035339063,
+      "balanced_accuracy": 0.3187072914418244,
+      "macro_f1": 0.3314276620744243,
+      "weighted_f1": 0.6343029379451381,
+      "top5_accuracy": 0.8896848137535817
+    }
+  },
+  "cnn": {
+    "test_metrics": {
+      "top1_accuracy": 0.7174999713897705,
+      "top5_accuracy": 0.8995000123977661,
+      "macro_f1": 0.30318418424365795,
+      "weighted_f1": 0.6825027911018853,
+      "balanced_accuracy": 0.3027806173657232,
+      "loss": 1.221146583557129,
+      "raw": {
+        "accuracy": 0.7174999713897705,
+        "loss": 1.221146583557129,
+        "top5_accuracy": 0.8995000123977661
+      }
+    }
+  }
+}

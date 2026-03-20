@@ -1,0 +1,494 @@
+{
+  "generated_utc": "2026-03-19T17:08:23.819077+00:00",
+  "dataset_root": "data/2014",
+  "reference": {
+    "expected_classes": 103,
+    "expected_images": 3500000
+  },
+  "local_snapshot": {
+    "class_count": 94,
+    "total_images": 329832,
+    "class_count_gap_vs_reference": -9,
+    "image_count_gap_vs_reference": -3170168
+  },
+  "distribution": {
+    "count_summary": {
+      "min": 1.0,
+      "max": 266156.0,
+      "mean": 3508.851063829787,
+      "median": 27.5,
+      "std": 27495.87312320897,
+      "q1": 8.0,
+      "q3": 173.25
+    },
+    "classes_lt_10": 29,
+    "classes_lt_50": 54,
+    "classes_lt_100": 66,
+    "classes_lt_500": 80
+  },
+  "largest_classes_top10": [
+    {
+      "class_name": "mix",
+      "image_count": 266156
+    },
+    {
+      "class_name": "detritus",
+      "image_count": 36346
+    },
+    {
+      "class_name": "Leptocylindrus",
+      "image_count": 4246
+    },
+    {
+      "class_name": "dino30",
+      "image_count": 3816
+    },
+    {
+      "class_name": "mix_elongated",
+      "image_count": 3528
+    },
+    {
+      "class_name": "Cylindrotheca",
+      "image_count": 2345
+    },
+    {
+      "class_name": "Rhizosolenia",
+      "image_count": 2199
+    },
+    {
+      "class_name": "Chaetoceros",
+      "image_count": 1871
+    },
+    {
+      "class_name": "Ciliate_mix",
+      "image_count": 1074
+    },
+    {
+      "class_name": "Guinardia_delicatula",
+      "image_count": 949
+    }
+  ],
+  "smallest_classes_top10": [
+    {
+      "class_name": "Akashiwo",
+      "image_count": 1
+    },
+    {
+      "class_name": "Chaetoceros_didymus_flagellate",
+      "image_count": 1
+    },
+    {
+      "class_name": "G_delicatula_detritus",
+      "image_count": 1
+    },
+    {
+      "class_name": "Lauderia",
+      "image_count": 1
+    },
+    {
+      "class_name": "Strombidium_capitatum",
+      "image_count": 1
+    },
+    {
+      "class_name": "Strombidium_conicum",
+      "image_count": 2
+    },
+    {
+      "class_name": "Euplotes_sp",
+      "image_count": 3
+    },
+    {
+      "class_name": "Leegaardiella_ovalis",
+      "image_count": 3
+    },
+    {
+      "class_name": "Odontella",
+      "image_count": 3
+    },
+    {
+      "class_name": "Protoperidinium",
+      "image_count": 3
+    }
+  ],
+  "file_extensions": {
+    ".png": 329832
+  },
+  "per_class": [
+    {
+      "class_name": "Akashiwo",
+      "image_count": 1
+    },
+    {
+      "class_name": "amoeba",
+      "image_count": 71
+    },
+    {
+      "class_name": "Amphidinium_sp",
+      "image_count": 66
+    },
+    {
+      "class_name": "Asterionellopsis",
+      "image_count": 128
+    },
+    {
+      "class_name": "bad",
+      "image_count": 10
+    },
+    {
+      "class_name": "bead",
+      "image_count": 17
+    },
+    {
+      "class_name": "Cerataulina",
+      "image_count": 412
+    },
+    {
+      "class_name": "Cerataulina_flagellate",
+      "image_count": 5
+    },
+    {
+      "class_name": "Ceratium",
+      "image_count": 6
+    },
+    {
+      "class_name": "Chaetoceros",
+      "image_count": 1871
+    },
+    {
+      "class_name": "Chaetoceros_didymus",
+      "image_count": 11
+    },
+    {
+      "class_name": "Chaetoceros_didymus_flagellate",
+      "image_count": 1
+    },
+    {
+      "class_name": "Chaetoceros_flagellate",
+      "image_count": 4
+    },
+    {
+      "class_name": "Chaetoceros_other",
+      "image_count": 9
+    },
+    {
+      "class_name": "Chaetoceros_pennate",
+      "image_count": 6
+    },
+    {
+      "class_name": "Chrysochromulina",
+      "image_count": 48
+    },
+    {
+      "class_name": "Ciliate_mix",
+      "image_count": 1074
+    },
+    {
+      "class_name": "clusterflagellate",
+      "image_count": 7
+    },
+    {
+      "class_name": "Cochlodinium",
+      "image_count": 4
+    },
+    {
+      "class_name": "Corethron",
+      "image_count": 447
+    },
+    {
+      "class_name": "Coscinodiscus",
+      "image_count": 17
+    },
+    {
+      "class_name": "Cylindrotheca",
+      "image_count": 2345
+    },
+    {
+      "class_name": "DactFragCerataul",
+      "image_count": 175
+    },
+    {
+      "class_name": "Dactyliosolen",
+      "image_count": 532
+    },
+    {
+      "class_name": "Delphineis",
+      "image_count": 55
+    },
+    {
+      "class_name": "detritus",
+      "image_count": 36346
+    },
+    {
+      "class_name": "diatom_flagellate",
+      "image_count": 24
+    },
+    {
+      "class_name": "Dictyocha",
+      "image_count": 61
+    },
+    {
+      "class_name": "Didinium_sp",
+      "image_count": 7
+    },
+    {
+      "class_name": "dino30",
+      "image_count": 3816
+    },
+    {
+      "class_name": "dino_large1",
+      "image_count": 5
+    },
+    {
+      "class_name": "Dinobryon",
+      "image_count": 588
+    },
+    {
+      "class_name": "Dinophysis",
+      "image_count": 13
+    },
+    {
+      "class_name": "Ditylum",
+      "image_count": 217
+    },
+    {
+      "class_name": "Ditylum_parasite",
+      "image_count": 22
+    },
+    {
+      "class_name": "Emiliania_huxleyi",
+      "image_count": 8
+    },
+    {
+      "class_name": "Ephemera",
+      "image_count": 23
+    },
+    {
+      "class_name": "Eucampia",
+      "image_count": 44
+    },
+    {
+      "class_name": "Euglena",
+      "image_count": 19
+    },
+    {
+      "class_name": "Euplotes_sp",
+      "image_count": 3
+    },
+    {
+      "class_name": "flagellate_sp3",
+      "image_count": 177
+    },
+    {
+      "class_name": "G_delicatula_detritus",
+      "image_count": 1
+    },
+    {
+      "class_name": "G_delicatula_external_parasite",
+      "image_count": 9
+    },
+    {
+      "class_name": "G_delicatula_parasite",
+      "image_count": 57
+    },
+    {
+      "class_name": "Guinardia_delicatula",
+      "image_count": 949
+    },
+    {
+      "class_name": "Guinardia_flaccida",
+      "image_count": 43
+    },
+    {
+      "class_name": "Guinardia_striata",
+      "image_count": 447
+    },
+    {
+      "class_name": "Gyrodinium",
+      "image_count": 58
+    },
+    {
+      "class_name": "Heterocapsa_triquetra",
+      "image_count": 67
+    },
+    {
+      "class_name": "Katodinium_or_Torodinium",
+      "image_count": 31
+    },
+    {
+      "class_name": "kiteflagellates",
+      "image_count": 4
+    },
+    {
+      "class_name": "Laboea_strobila",
+      "image_count": 9
+    },
+    {
+      "class_name": "Lauderia",
+      "image_count": 1
+    },
+    {
+      "class_name": "Leegaardiella_ovalis",
+      "image_count": 3
+    },
+    {
+      "class_name": "Leptocylindrus",
+      "image_count": 4246
+    },
+    {
+      "class_name": "Leptocylindrus_mediterraneus",
+      "image_count": 31
+    },
+    {
+      "class_name": "Licmophora",
+      "image_count": 14
+    },
+    {
+      "class_name": "Mesodinium_sp",
+      "image_count": 107
+    },
+    {
+      "class_name": "mix",
+      "image_count": 266156
+    },
+    {
+      "class_name": "mix_elongated",
+      "image_count": 3528
+    },
+    {
+      "class_name": "Odontella",
+      "image_count": 3
+    },
+    {
+      "class_name": "other_interaction",
+      "image_count": 211
+    },
+    {
+      "class_name": "Paralia",
+      "image_count": 13
+    },
+    {
+      "class_name": "Parvicorbicula_socialis",
+      "image_count": 58
+    },
+    {
+      "class_name": "pennate",
+      "image_count": 330
+    },
+    {
+      "class_name": "pennate_morphotype1",
+      "image_count": 18
+    },
+    {
+      "class_name": "pennates_on_diatoms",
+      "image_count": 24
+    },
+    {
+      "class_name": "Phaeocystis",
+      "image_count": 65
+    },
+    {
+      "class_name": "Pleuronema_sp",
+      "image_count": 11
+    },
+    {
+      "class_name": "Pleurosigma",
+      "image_count": 100
+    },
+    {
+      "class_name": "pollen",
+      "image_count": 4
+    },
+    {
+      "class_name": "Prorocentrum",
+      "image_count": 168
+    },
+    {
+      "class_name": "Proterythropsis_sp",
+      "image_count": 74
+    },
+    {
+      "class_name": "Protoperidinium",
+      "image_count": 3
+    },
+    {
+      "class_name": "Pseudochattonella_farcimen",
+      "image_count": 71
+    },
+    {
+      "class_name": "Pseudonitzschia",
+      "image_count": 578
+    },
+    {
+      "class_name": "Pyramimonas_longicauda",
+      "image_count": 21
+    },
+    {
+      "class_name": "Rhizosolenia",
+      "image_count": 2199
+    },
+    {
+      "class_name": "Skeletonema",
+      "image_count": 342
+    },
+    {
+      "class_name": "spore",
+      "image_count": 22
+    },
+    {
+      "class_name": "Stephanopyxis",
+      "image_count": 3
+    },
+    {
+      "class_name": "Strobilidium_morphotype1",
+      "image_count": 8
+    },
+    {
+      "class_name": "Strombidium_capitatum",
+      "image_count": 1
+    },
+    {
+      "class_name": "Strombidium_conicum",
+      "image_count": 2
+    },
+    {
+      "class_name": "Strombidium_inclinatum",
+      "image_count": 6
+    },
+    {
+      "class_name": "Strombidium_morphotype1",
+      "image_count": 47
+    },
+    {
+      "class_name": "Strombidium_morphotype2",
+      "image_count": 12
+    },
+    {
+      "class_name": "Strombidium_oculatum",
+      "image_count": 9
+    },
+    {
+      "class_name": "Thalassionema",
+      "image_count": 35
+    },
+    {
+      "class_name": "Thalassiosira",
+      "image_count": 664
+    },
+    {
+      "class_name": "Thalassiosira_dirty",
+      "image_count": 190
+    },
+    {
+      "class_name": "Tintinnid",
+      "image_count": 68
+    },
+    {
+      "class_name": "Tontonia_gracillima",
+      "image_count": 11
+    },
+    {
+      "class_name": "zooplankton",
+      "image_count": 5
+    }
+  ]
+}

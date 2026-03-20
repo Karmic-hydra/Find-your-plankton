@@ -1,0 +1,8 @@
+numpy
+Pillow
+PyYAML
+scikit-learn
+joblib
+scikit-image
+tensorflow
+streamlit
