@@ -14,8 +14,16 @@ from sklearn.metrics import accuracy_score, balanced_accuracy_score, f1_score
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
+from sklearn.utils.class_weight import compute_class_weight
 
 from src.common.manifest import ManifestRow, load_manifests
+
+try:
+    from imblearn.over_sampling import SMOTE, RandomOverSampler
+
+    HAVE_IMBLEARN = True
+except Exception:
+    HAVE_IMBLEARN = False
 
 try:
     from skimage.feature import hog, local_binary_pattern
@@ -98,6 +106,50 @@ def build_matrix(rows: list[ManifestRow], image_size: int) -> tuple[np.ndarray, 
     x = np.stack(feats, axis=0)
     y = np.array(labels, dtype=np.int64)
     return x, y
+
+
+def balance_dataset(x: np.ndarray, y: np.ndarray, seed: int) -> tuple[np.ndarray, np.ndarray]:
+    """Oversample minority classes using SMOTE or RandomOverSampler as fallback."""
+    if not HAVE_IMBLEARN:
+        print("Warning: imbalanced-learn not installed. Using manual oversampling.")
+        return _manual_oversample(x, y, seed)
+
+    # Use SMOTE if classes have enough samples (k_neighbors + 1 = 6 minimum).
+    # Otherwise fall back to RandomOverSampler which just duplicates samples.
+    class_counts = np.bincount(y)
+    min_samples = class_counts[class_counts > 0].min()
+
+    if min_samples >= 6:
+        sampler = SMOTE(random_state=seed, k_neighbors=5)
+    else:
+        # RandomOverSampler duplicates existing samples - works for any class size.
+        sampler = RandomOverSampler(random_state=seed)
+
+    x_balanced, y_balanced = sampler.fit_resample(x, y)
+    print(f"Balanced dataset: {len(y)} -> {len(y_balanced)} samples")
+    return x_balanced, y_balanced
+
+
+def _manual_oversample(x: np.ndarray, y: np.ndarray, seed: int) -> tuple[np.ndarray, np.ndarray]:
+    """Simple oversampling by duplicating minority class samples."""
+    rng = np.random.default_rng(seed)
+    class_counts = np.bincount(y)
+    max_count = class_counts.max()
+
+    new_x, new_y = [x], [y]
+    for class_id in range(len(class_counts)):
+        if class_counts[class_id] == 0:
+            continue
+        count = class_counts[class_id]
+        if count < max_count:
+            # Oversample to match majority class
+            indices = np.where(y == class_id)[0]
+            n_to_add = max_count - count
+            sampled_indices = rng.choice(indices, size=n_to_add, replace=True)
+            new_x.append(x[sampled_indices])
+            new_y.append(np.full(n_to_add, class_id, dtype=np.int64))
+
+    return np.vstack(new_x), np.concatenate(new_y)
 
 
 def top5_from_scores(scores: np.ndarray, y_true: np.ndarray) -> float:
@@ -184,6 +236,14 @@ def main() -> None:
     x_val, y_val = build_matrix(val_rows, image_size=image_size)
     x_test, y_test = build_matrix(test_rows, image_size=image_size)
 
+    # Balance training data to prevent bias towards majority classes.
+    x_train_balanced, y_train_balanced = balance_dataset(x_train, y_train, seed)
+
+    # Compute aggressive class weights (useful even after balancing for borderline cases).
+    unique_classes = np.unique(y_train_balanced)
+    weights = compute_class_weight("balanced", classes=unique_classes, y=y_train_balanced)
+    class_weight_dict = {c: w for c, w in zip(unique_classes, weights)}
+
     svm_cfg = cfg["models"]["svm"]
     rf_cfg = cfg["models"]["random_forest"]
 
@@ -191,7 +251,7 @@ def main() -> None:
         kernel=str(svm_cfg.get("kernel", "rbf")),
         C=float(svm_cfg.get("C", 10.0)),
         gamma=str(svm_cfg.get("gamma", "scale")),
-        class_weight=str(svm_cfg.get("class_weight", "balanced")),
+        class_weight=class_weight_dict,
         probability=bool(svm_cfg.get("probability", False)),
         random_state=seed,
     )
@@ -199,26 +259,28 @@ def main() -> None:
         n_estimators=int(rf_cfg.get("n_estimators", 300)),
         max_depth=rf_cfg.get("max_depth", None),
         n_jobs=int(rf_cfg.get("n_jobs", -1)),
-        class_weight=str(rf_cfg.get("class_weight", "balanced_subsample")),
+        class_weight=class_weight_dict,
         random_state=seed,
     )
 
     results = {
         "config": cfg,
         "dataset": {
-            "train_samples": len(train_rows),
+            "train_samples_original": len(train_rows),
+            "train_samples_balanced": len(y_train_balanced),
             "val_samples": len(val_rows),
             "test_samples": len(test_rows),
             "have_skimage": HAVE_SKIMAGE,
+            "have_imblearn": HAVE_IMBLEARN,
         },
         "models": [],
     }
 
     results["models"].append(
-        train_and_eval("svm", svm, x_train, y_train, x_val, y_val, x_test, y_test, output_dir)
+        train_and_eval("svm", svm, x_train_balanced, y_train_balanced, x_val, y_val, x_test, y_test, output_dir)
     )
     results["models"].append(
-        train_and_eval("random_forest", rf, x_train, y_train, x_val, y_val, x_test, y_test, output_dir)
+        train_and_eval("random_forest", rf, x_train_balanced, y_train_balanced, x_val, y_val, x_test, y_test, output_dir)
     )
 
     (output_dir / "metrics.json").write_text(json.dumps(results, indent=2), encoding="utf-8")

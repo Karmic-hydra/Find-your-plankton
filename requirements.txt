@@ -6,3 +6,5 @@ joblib
 scikit-image
 tensorflow
 streamlit
+albumentations>=1.3.0
+opencv-python>=4.8.0

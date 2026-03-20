@@ -1,0 +1,33 @@
+training:
+  seed: 42
+  batch_size: 32  # Increased for better gradient estimates
+  epochs_stage1: 15  # Increased from 2 to allow better learning
+  epochs_stage2: 5
+  lr_stage1: 0.001  # Higher initial LR with warmup
+  lr_stage2: 0.0001
+  early_stopping_patience: 8  # More patience with better scheduling
+  reduce_lr_factor: 0.5
+  reduce_lr_patience: 3
+  warmup_epochs: 1  # Gradual warmup
+  mixed_precision: true  # Enable for faster training
+  label_smoothing: 0.1  # Smoothing for better generalization
+  max_class_weight: 15.0  # Increased for minority classes
+  min_class_weight: 0.2
+
+model:
+  type: efficientnetv2b0  # Can switch to efficientnetv2b1 for better accuracy
+  image_size: 224  # Increased from 160 for more detail capture
+  dense_units: 512  # Increased from 384
+  dropout_head_1: 0.4  # Slightly increased
+  dropout_head_2: 0.3
+  l2_regularization: 1.0e-4
+
+fine_tune:
+  enabled: true
+  unfreeze_last_n_layers: 30
+  unfreeze_stages: 3  # Progressive unfreezing
+
+data:
+  max_train_samples: null  # Use all available training data
+  max_val_samples: null
+  max_test_samples: null

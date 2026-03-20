@@ -104,7 +104,7 @@ def main() -> None:
     val_rows = stratified_limit_rows(manifests["val"], max_val, split_offset=22)
     test_rows = stratified_limit_rows(manifests["test"], max_test, split_offset=33)
 
-    # Soft class weights reduce dominant-class bias without destabilizing training.
+    # Aggressive class weights to combat bias towards majority classes.
     train_counts = defaultdict(int)
     for r in train_rows:
         train_counts[r.label_index] += 1
@@ -116,9 +116,10 @@ def main() -> None:
         if cnt > 0
     }
 
-    # Use sqrt + clipping to prevent extreme weights (which can tank accuracy early).
-    class_weight = {cid: float(np.sqrt(w)) for cid, w in raw_weights.items()}
-    class_weight = {cid: float(min(3.0, max(0.5, w))) for cid, w in class_weight.items()}
+    # Use log1p dampening (gentler than sqrt) with wider bounds [0.3, 10.0].
+    # This gives minority classes much stronger weight without destabilizing.
+    class_weight = {cid: float(1.0 + np.log1p(w - 1)) for cid, w in raw_weights.items()}
+    class_weight = {cid: float(min(10.0, max(0.3, w))) for cid, w in class_weight.items()}
 
     # Re-center around mean 1.0 so learning-rate behavior stays comparable.
     mean_w = float(np.mean(list(class_weight.values()))) if class_weight else 1.0
@@ -183,27 +184,42 @@ def main() -> None:
     outputs = layers.Dense(num_classes, activation="softmax")(x)
     model = tf.keras.Model(inputs, outputs)
 
+    # Monitor val_loss instead of val_accuracy - loss is less biased towards majority classes
+    # when using class weights and focal loss.
     callbacks = [
         tf.keras.callbacks.ModelCheckpoint(
             filepath=(output_dir / "best_cnn.keras").as_posix(),
-            monitor="val_accuracy",
+            monitor="val_loss",
+            mode="min",
             save_best_only=True,
         ),
         tf.keras.callbacks.EarlyStopping(
-            monitor="val_accuracy",
+            monitor="val_loss",
+            mode="min",
             patience=int(cfg["training"]["early_stopping_patience"]),
             restore_best_weights=True,
         ),
         tf.keras.callbacks.ReduceLROnPlateau(
-            monitor="val_accuracy",
+            monitor="val_loss",
+            mode="min",
             factor=float(cfg["training"]["reduce_lr_factor"]),
             patience=int(cfg["training"]["reduce_lr_patience"]),
         ),
     ]
 
+    # Focal loss: down-weights easy (majority class) examples, focuses on hard ones.
+    # gamma=2.0 is standard; alpha weighting is handled by class_weight.
+    def focal_loss(y_true, y_pred, gamma=2.0):
+        y_true = tf.cast(y_true, tf.int32)
+        y_pred = tf.clip_by_value(y_pred, 1e-7, 1.0 - 1e-7)
+        p_t = tf.gather(y_pred, y_true, batch_dims=1)
+        focal_weight = tf.pow(1.0 - p_t, gamma)
+        ce = -tf.math.log(p_t)
+        return tf.reduce_mean(focal_weight * ce)
+
     model.compile(
         optimizer=tf.keras.optimizers.Adam(float(cfg["training"]["lr_stage1"])),
-        loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+        loss=focal_loss,
         metrics=[
             tf.keras.metrics.SparseCategoricalAccuracy(name="accuracy"),
             tf.keras.metrics.SparseTopKCategoricalAccuracy(k=5, name="top5_accuracy"),
@@ -227,7 +243,7 @@ def main() -> None:
 
         model.compile(
             optimizer=tf.keras.optimizers.Adam(float(cfg["training"]["lr_stage2"])),
-            loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+            loss=focal_loss,
             metrics=[
                 tf.keras.metrics.SparseCategoricalAccuracy(name="accuracy"),
                 tf.keras.metrics.SparseTopKCategoricalAccuracy(k=5, name="top5_accuracy"),
